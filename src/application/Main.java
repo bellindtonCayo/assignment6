@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,10 +44,16 @@ import javafx.scene.text.Text;
 
 
 public class Main extends Application implements EventHandler<ActionEvent> {
+	
+	static int junitInt;
+	static int j ;
+static int unitc1;
+	//static int junitInt = j;
+	
 	Button pButton;
 	Label label1;
-	String resultSt;
-	List<String> wordList = new ArrayList<String>();;	
+	static String resultSt;
+	static List<String> wordList = new ArrayList<String>();;	
 	ListView<String> listview =new ListView<String>();
 
 	@Override
@@ -170,17 +177,39 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 	resultSt=result1.toString();
 	label1.setText("Here is your top 20 words list");
 		  System.out.println(result1); 
+		  //junit test
+		   
+		   int unitc =0;
 		  for(int i=0; i <20 ; ++i) {
 			wordList.add(result1.get(i).toString());
 			System.out.println(wordList.get(i));
+			 unitc++;
+			 //junit word count;
+			unitc1 = unitc;
 		  }
+		
 			listview.getItems().addAll(wordList);
-
+System.out.println(unitc1);
+			
+/////junit test
 		 }	
 			
+///junit test
 		}
+	public static int wordc( ){
+		
+		
+	int result = 1;
+		if (unitc1 == 20) {
+				result = 1;
+			
+		}
+		return result;
+		
+		}
+
 	
-	
+	 
 	public static void main(String[] args) {
 		launch(args);
 	}
