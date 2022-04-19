@@ -6,8 +6,15 @@ CRN: 26773
 Dr. Macon
 */
 
-	
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,7 +23,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.jsoup.Connection;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -124,7 +131,7 @@ static int unitc1;
 			 
 			 String site = "https://www.gutenberg.org/files/1065/1065-h/1065-h.htm";
 		 //Connection to the website
-		 Connection connection = Jsoup.connect(site);
+		 org.jsoup.Connection connection = Jsoup.connect(site);
 		 // Get request
 		Document document = null;
 		try {
@@ -174,9 +181,55 @@ static int unitc1;
 			        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 			        .limit(20)
 			        .collect(Collectors.toList());
+		  
+		  
+		  Connection connection1;
+		//Load JDBC driver and make connect with MYSQL server
+				try {
+				     ResultSet results = null;
+				     try {
+				          Class.forName("com.mysql.cj.jdbc.Driver");
+				    } catch (ClassNotFoundException e) {
+				        e.printStackTrace();
+				    }
+				    connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/wordOccurrences","root","cop2805");
+				    
+	//--------------comment out these to not duplicate records			   
+				    //preparedStatement posted = connection1.prepareStatement("insert into words(word) values ('the')");
+				    //posted = connection1.prepareStatement("insert into words(word) values ('test')");
+				   // posted = connection1.prepareStatement("insert into words(word) values ('this')");
+				  //  posted = connection1.prepareStatement("insert into words(word) values ('a')");
+				  
+	////----------- Insert Into Mysql			    
+				    for(int i =0; i < result1.size(); ++i) {
+					   
+				   try {
+				    PreparedStatement  posted = connection1.prepareStatement("insert into words(word) values ('"+result1.get(i)+"')");
+
+				 
+				    	 posted.executeUpdate();
+				    } catch(Exception e) {System.out.println(e);}
+				    finally {
+				    System.out.println("Insert Completed");
+				    }
+				   }
+		// Get results from MYSql and print into java
+				    Statement statement = connection1.createStatement();
+				    ResultSet resultset = statement.executeQuery("SELECT* FROM words;");
+				    while(resultset.next()) {
+				    	System.out.println(resultset.getString(1) + " ");
+				    }
+				} catch (SQLException e) {
+				    e.printStackTrace();
+				}
+		  
+////----------------------------------------------------		  
+		  
+		  
+		  
 	resultSt=result1.toString();
 	label1.setText("Here is your top 20 words list");
-		  System.out.println(result1); 
+		 // System.out.println(result1); 
 		  //junit test
 		   
 		   int unitc =0;
