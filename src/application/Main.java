@@ -14,12 +14,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -126,6 +128,45 @@ static int unitc1;
 	public void handle (ActionEvent event) {
 		if(event.getSource()== pButton) {
 			
+			
+			
+			try
+			{
+					
+				String servec = "ok";
+					Socket connection = new Socket("127.0.0.1",1236);
+					InputStream input = connection.getInputStream();
+					OutputStream output = connection.getOutputStream();
+							
+					output.write(servec.length());
+					output.write(servec.getBytes());
+							
+					int n = input.read();
+					byte[] data = new byte[n];
+					input.read(data);	
+							
+					String serverResponse = new String(data, StandardCharsets.UTF_8);
+					
+							
+				
+						System.out.println("Server said: " + serverResponse);
+						if(!connection.isClosed())
+							connection.close();
+							
+						} catch (IOException e){
+							e.printStackTrace();
+						
+						}
+		
+//-----------------------
+			
+		
+		
+	 catch(Exception e) {
+		e.printStackTrace();
+	}
+}
+
 			
 			//-------------------------------Connection to Website--------------------------------------------------------	 
 			 
@@ -248,7 +289,7 @@ System.out.println(unitc1);
 		 }	
 			
 ///junit test
-		}
+		
 	public static int wordc( ){
 		
 		
